@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,7 @@ public class BoardDto {
         private String title;
         private String contents;
         private String writer;
+        private List<CommentRes> comments = new ArrayList<>();
 
         public static BoardRes from(Board board) {
             return BoardRes.builder()
@@ -41,6 +43,7 @@ public class BoardDto {
                     .title(board.getTitle())
                     .contents(board.getContents())
                     .writer(board.getWriter())
+                    .comments(board.getComments().stream().map(CommentRes::from).collect(Collectors.toList()))
                     .build();
         }
     }
