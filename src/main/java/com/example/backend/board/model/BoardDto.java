@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,6 +35,7 @@ public class BoardDto {
         private String title;
         private String contents;
         private String writer;
+        private List<CommentRes> comments = new ArrayList<>();
 
         public static BoardRes from(Board board) {
             return BoardRes.builder()
@@ -41,6 +43,7 @@ public class BoardDto {
                     .title(board.getTitle())
                     .contents(board.getContents())
                     .writer(board.getWriter())
+                    .comments(board.getComments().stream().map(CommentRes::from).collect(Collectors.toList()))
                     .build();
         }
     }
@@ -69,6 +72,38 @@ public class BoardDto {
                     .hasNext(boardPage.hasNext())
                     .hasPrevious(boardPage.hasPrevious())
                     .boards(boardPage.stream().map(BoardRes::from).collect(Collectors.toList()))
+                    .build();
+        }
+    }
+
+
+    @Getter
+    public static class CommentCreate {
+        private String content;
+        private String writer;
+        private Board board;
+
+        public Comment toEntity(Board board) {
+            return Comment.builder()
+                    .content(content)
+                    .writer(writer)
+                    .board(board)
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    public static class CommentRes {
+        private Long idx;
+        private String content;
+        private String writer;
+
+        public static CommentRes from(Comment comment) {
+            return CommentRes.builder()
+                    .idx(comment.getIdx())
+                    .content(comment.getContent())
+                    .writer(comment.getWriter())
                     .build();
         }
     }
