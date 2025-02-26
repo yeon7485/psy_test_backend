@@ -19,7 +19,7 @@ public class BoardService {
     }
 
     public BoardDto.BoardPageRes getBoards(int page, int size) {
-        Page<Board> result = boardRepository.findAll(PageRequest.of(page, size));
+        Page<Board> result = boardRepository.findAllByOrderByIdxDesc(PageRequest.of(page, size));
 
         return BoardDto.BoardPageRes.from(result);
     }
@@ -34,6 +34,8 @@ public class BoardService {
     public BoardDto.CommentRes addComment(Long boardIdx, BoardDto.CommentCreate dto) {
         Board board = boardRepository.findById(boardIdx).orElseThrow();
         Comment comment = commentRepository.save(dto.toEntity(board));
+        board.addCommentsCount();
+        boardRepository.save(board);
 
         return BoardDto.CommentRes.from(comment);
     }

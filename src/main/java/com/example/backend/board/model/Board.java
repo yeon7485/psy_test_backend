@@ -20,6 +20,15 @@ public class Board {
     private String contents;
     private String writer;
 
+    private int commentCount;
+
     @OneToMany(mappedBy = "board")
     private List<Comment> comments = new ArrayList<>();
+
+    public void addCommentsCount() {
+        this.commentCount += 1;
+    }
+    public void subCommentsCount() {
+        this.commentCount -= 1;
+    }
 }

@@ -26,6 +26,7 @@ public class BoardDto {
                     .title(title)
                     .contents(contents)
                     .writer(writer)
+                    .commentCount(0)
                     .build();
         }
     }
@@ -56,6 +57,29 @@ public class BoardDto {
         }
     }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class BoardSimpleRes {
+        @Schema(description = "게시글 번호", example = "1")
+        private Long idx;
+        @Schema(description = "제목", example = "제목 01")
+        private String title;
+        @Schema(description = "작성자", example = "작성자 01")
+        private String writer;
+        @Schema(description = "댓글 수", example = "3")
+        private int commentCount;
+
+        public static BoardSimpleRes from(Board board) {
+            return BoardSimpleRes.builder()
+                    .idx(board.getIdx())
+                    .title(board.getTitle())
+                    .writer(board.getWriter())
+                    .commentCount(board.getCommentCount())
+                    .build();
+        }
+    }
 
     @Getter
     @NoArgsConstructor
@@ -75,7 +99,7 @@ public class BoardDto {
         @Schema(description = "이전 페이지 존재 여부", example = "false")
         private boolean hasPrevious;
 
-        private List<BoardRes> boards;
+        private List<BoardSimpleRes> boards;
 
         public static BoardPageRes from(Page<Board> boardPage) {
             return BoardPageRes.builder()
@@ -85,7 +109,7 @@ public class BoardDto {
                     .totalPages(boardPage.getTotalPages())
                     .hasNext(boardPage.hasNext())
                     .hasPrevious(boardPage.hasPrevious())
-                    .boards(boardPage.stream().map(BoardRes::from).collect(Collectors.toList()))
+                    .boards(boardPage.stream().map(BoardSimpleRes::from).collect(Collectors.toList()))
                     .build();
         }
     }
@@ -97,7 +121,6 @@ public class BoardDto {
         private String content;
         @Schema(description = "작성자", example = "작성자 01")
         private String writer;
-        private Board board;
 
         public Comment toEntity(Board board) {
             return Comment.builder()
