@@ -29,5 +29,12 @@ public class BoardController {
         return ResponseEntity.ok(new BaseResponse<>(true, "게시판 목록 조회 성공", boards));
     }
 
+    @GetMapping("/read/{idx}")
+    public ResponseEntity<BaseResponse<BoardDto.BoardRes>> getBoard(@PathVariable Long idx) {
+        BoardDto.BoardRes board = boardService.getBoard(idx);
+
+        return ResponseEntity.ok(new BaseResponse<>(true, "게시판 상세 조회 성공", board));
+    }
+
 
 }

@@ -23,4 +23,11 @@ public class BoardService {
 
         return BoardDto.BoardPageRes.from(result);
     }
+
+
+    public BoardDto.BoardRes getBoard(Long idx) {
+        Board board = boardRepository.findById(idx).orElseThrow();
+
+        return BoardDto.BoardRes.from(board);
+    }
 }
