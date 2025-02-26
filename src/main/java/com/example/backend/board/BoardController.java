@@ -1,13 +1,10 @@
 package com.example.backend.board;
 
-import com.example.backend.board.model.Board;
 import com.example.backend.board.model.BoardDto;
 import com.example.backend.common.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/board")
@@ -36,5 +33,11 @@ public class BoardController {
         return ResponseEntity.ok(new BaseResponse<>(true, "게시판 상세 조회 성공", board));
     }
 
+    @PostMapping("/comment/{boardIdx}")
+    public ResponseEntity<BaseResponse<BoardDto.CommentRes>> createComment(@RequestBody BoardDto.CommentCreate dto, @PathVariable Long boardIdx) {
+        BoardDto.CommentRes comment = boardService.addComment(boardIdx, dto);
+
+        return ResponseEntity.ok(new BaseResponse<>(true, "댓글 작성 성공", comment));
+    }
 
 }

@@ -3,6 +3,9 @@ package com.example.backend.board.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,4 +19,7 @@ public class Board {
     private String title;
     private String contents;
     private String writer;
+
+    @OneToMany(mappedBy = "board")
+    private List<Comment> comments = new ArrayList<>();
 }
